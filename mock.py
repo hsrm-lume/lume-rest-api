@@ -45,7 +45,7 @@ class Tree():
                     "lat": c.p.lat,
                     "lng": c.p.lng
                 },
-                "date": c.p.age.timestamp()  # for dev purposes manual setting of date
+                "date": c.p.age.timestamp()*1000  # for dev purposes manual setting of date
             })
             c.save()
 
@@ -59,7 +59,7 @@ class Tree():
                 Tree(
                     Point(
                         self.p.lat + pointDiff[0],
-                        self.p.lng + pointDiff[1],
+                        self.p.lng + pointDiff[1]*2,
                         age,
                         str(uuid.uuid4())
                     )
