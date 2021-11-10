@@ -1,11 +1,12 @@
 require('dotenv').config();
 import 'reflect-metadata';
 import App from './app';
-const PORT = process.env.PORT || 3000;
+import config from './config/config';
 
 const app = new App();
 app.initialize();
 
-app.defaultApp.listen(PORT, () => {
-	console.log('Express server listening on port ' + PORT);
+app.defaultApp.listen(config.port, () => {
+	if (config.stage != 'prod') console.log('CURRENT STAGE: ' + config.stage);
+	console.log('Express server listening on port ' + config.port);
 });

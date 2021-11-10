@@ -1,4 +1,5 @@
 import { NextFunction, Request, Response } from 'express';
+import config from '../config/config';
 import neo4j from '../services/neo4j';
 import ApiError from '../util/ApiError';
 
@@ -8,9 +9,16 @@ const isUUID = (uuid: any) =>
 	) !== null;
 
 export const create = (req: Request, res: Response, next: NextFunction) => {
-	let { position, uuidParent, uuidChild } = req.body;
+	const { position, uuidParent, uuidChild, date } = req.body;
+	// date can be chosen in test env
+	const dateCreated =
+		config.stage === 'test'
+			? new Date(date).getTime()
+			: new Date().getTime();
+
 	// input validation
 	if (
+		!position ||
 		position.lng < -180 ||
 		position.lng > 180 ||
 		position.lat < -90 ||
@@ -37,7 +45,7 @@ export const create = (req: Request, res: Response, next: NextFunction) => {
 					childUuid: uuidChild,
 					lat: position.lat,
 					lng: position.lng,
-					litTime: new Date().getTime(),
+					litTime: dateCreated,
 				}
 			)
 		)
@@ -46,11 +54,13 @@ export const create = (req: Request, res: Response, next: NextFunction) => {
 		.then((rs) => {
 			if (rs.length === 0)
 				return next(new ApiError(424, 'Parent Node not found'));
-			else
+			else {
+				console.log('inserted ' + rs[0].get('b').properties.uuid);
 				res.wjson({
 					status: 'ok',
 					data: rs,
 				});
+			}
 		})
 		.catch((e) => next(new ApiError(500, 'Insert Error', e)))
 		.finally(() => session.close());

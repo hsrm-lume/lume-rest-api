@@ -16,3 +16,11 @@ Restful API to create Tree Nodes in Neo4j db
     }
 }
 ```
+
+---
+
+Mock data:
+
+1. `docker-compose up`
+2. `npm run dev`
+3. `python mock.py`

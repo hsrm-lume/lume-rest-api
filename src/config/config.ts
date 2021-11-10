@@ -5,4 +5,6 @@ export default {
 		user: process.env.NEO4J_USER || 'neo4j',
 		password: process.env.NEO4J_PASSWORD || 's3cr3t4',
 	},
+	stage: process.env.NODE_STAGE || 'prod',
+	port: Number(process.env.PORT) || 3000,
 };
