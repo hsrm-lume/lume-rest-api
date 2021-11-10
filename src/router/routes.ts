@@ -12,7 +12,7 @@ const root = new N(
 	'v' + config.apiVersion,
 	{},
 	new N('new', {
-		post: { public: true, action: treeController.create },
+		post: { action: treeController.create },
 	})
 );
 export default root;

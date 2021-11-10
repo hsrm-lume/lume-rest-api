@@ -8,7 +8,7 @@ const isUUID = (uuid: any) =>
 	) !== null;
 
 export const create = (req: Request, res: Response, next: NextFunction) => {
-	let { position, uuidSelf, uuidOther } = req.body;
+	let { position, uuidParent, uuidChild } = req.body;
 	// input validation
 	if (
 		position.lng < -180 ||
@@ -17,10 +17,10 @@ export const create = (req: Request, res: Response, next: NextFunction) => {
 		position.lat > 90
 	)
 		return next(new ApiError(400, 'Invalid Position', position));
-	if (!isUUID(uuidSelf))
-		return next(new ApiError(400, 'Invalid UUID self', uuidSelf));
-	if (!isUUID(uuidOther))
-		return next(new ApiError(400, 'Invalid UUID other', uuidOther));
+	if (!isUUID(uuidParent))
+		return next(new ApiError(400, 'Invalid UUID parent', uuidParent));
+	if (!isUUID(uuidChild))
+		return next(new ApiError(400, 'Invalid UUID child', uuidChild));
 
 	// insert cypher-query
 	const session = neo4j.session();
@@ -29,12 +29,12 @@ export const create = (req: Request, res: Response, next: NextFunction) => {
 			txc.run(
 				`MATCH
 				(a:User)
-				WHERE a.uuid = $rootUuid
-				CREATE (a) - [r:Loc { lat: $lat, lng: $lng }] -> (b:User { uuid: $leafUuid, litTime: $litTime })
+				WHERE a.uuid = $parentUuid
+				CREATE (a) - [r:Loc { lat: $lat, lng: $lng }] -> (b:User { uuid: $childUuid, litTime: $litTime })
 				RETURN a,r,b`,
 				{
-					rootUuid: uuidSelf,
-					leafUuid: uuidOther,
+					parentUuid: uuidParent,
+					childUuid: uuidChild,
 					lat: position.lat,
 					lng: position.lng,
 					litTime: new Date().getTime(),

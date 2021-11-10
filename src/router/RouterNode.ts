@@ -3,9 +3,7 @@ import IRoute from './IRoute';
 
 type Method = 'get' | 'post' | 'put' | 'patch' | 'delete';
 type IHandler = {
-	[key in Method]?:
-		| RequestHandler
-		| { public: boolean; action: RequestHandler };
+	[key in Method]?: RequestHandler | { action: RequestHandler };
 };
 
 export class RouterNode {
