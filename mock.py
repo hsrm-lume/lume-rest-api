@@ -36,7 +36,6 @@ class Tree():
         self.children = list()
 
     def save(self):
-        pass
         for c in self.children:
             requests.post("http://localhost:3000/v1/new", json={
                 "uuidParent": self.p.uuid,
@@ -52,7 +51,7 @@ class Tree():
     def randomize(self, m) -> 'Tree':
         r = rnd(m/2, m, clip=True)
         for _ in range(r):
-            age = add_minutes(self.p.age, rnd(0, 60*24))
+            age = add_minutes(self.p.age, rnd(0, 60*24*50))
             pointDiff = list(
                 map(lambda x: x/10000, [rnd(-1000, 1000), rnd(-1000, 1000)]))
             self.children.append(
