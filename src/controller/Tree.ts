@@ -38,8 +38,8 @@ export const create = (req: Request, res: Response, next: NextFunction) => {
 				`MATCH
 				(a:User)
 				WHERE a.uuid = $parentUuid
-				CREATE (a) - [r:Loc { lat: $lat, lng: $lng }] -> (b:User { uuid: $childUuid, litTime: $litTime })
-				RETURN a,r,b`,
+				CREATE (a)-[:LIGHTS]->(b:User { uuid: $childUuid, litTime: $litTime, lat: $lat, lng: $lng })
+				RETURN a,b`,
 				{
 					parentUuid: uuidParent,
 					childUuid: uuidChild,
@@ -62,6 +62,9 @@ export const create = (req: Request, res: Response, next: NextFunction) => {
 				});
 			}
 		})
-		.catch((e) => next(new ApiError(500, 'Insert Error', e)))
+		.catch((e) => {
+			console.log(e);
+			next(new ApiError(500, 'Insert Error', e));
+		})
 		.finally(() => session.close());
 };

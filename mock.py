@@ -77,5 +77,5 @@ root = Tree(
     )
 ).randomize(10)
 
-print(root.save())
+root.save()
 print("ok")
