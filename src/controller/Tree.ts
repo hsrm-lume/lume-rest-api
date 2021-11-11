@@ -11,11 +11,9 @@ const isUUID = (uuid: any) =>
 export const create = (req: Request, res: Response, next: NextFunction) => {
 	const { position, uuidParent, uuidChild, date } = req.body;
 	// date can be chosen in test env
-	const dateCreated =
-		config.stage === 'test'
-			? new Date(date).getTime()
-			: new Date().getTime();
-
+	const dateCreated = (
+		config.stage === 'test' ? new Date(date) : new Date()
+	).getTime();
 	// input validation
 	if (
 		!position ||
