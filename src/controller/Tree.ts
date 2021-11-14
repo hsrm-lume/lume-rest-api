@@ -1,4 +1,5 @@
 import { NextFunction, Request, Response } from 'express';
+import { int } from 'neo4j-driver';
 import config from '../config/config';
 import neo4j from '../services/neo4j';
 import ApiError from '../util/ApiError';
@@ -11,9 +12,9 @@ const isUUID = (uuid: any) =>
 export const create = (req: Request, res: Response, next: NextFunction) => {
 	const { position, uuidParent, uuidChild, date } = req.body;
 	// date can be chosen in test env
-	const dateCreated = (
-		config.stage === 'test' ? new Date(date) : new Date()
-	).getTime();
+	const dateCreated = int(
+		(config.stage === 'test' ? new Date(date) : new Date()).getTime()
+	);
 	// input validation
 	if (
 		!position ||
