@@ -6,5 +6,5 @@ export default {
 		password: process.env.NEO4J_PASSWORD || 's3cr3t4',
 	},
 	stage: process.env.NODE_STAGE || 'prod',
-	port: Number(process.env.PORT) || 3000,
+	port: 3000,
 };
