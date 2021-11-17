@@ -9,7 +9,11 @@ const isUUID = (uuid: any) =>
 		/^[0-9A-F]{8}-[0-9A-F]{4}-[1-5][0-9A-F]{3}-[89AB][0-9A-F]{3}-[0-9A-F]{12}$/i
 	) !== null;
 
-export const create = (req: Request, res: Response, next: NextFunction) => {
+export const create = async (
+	req: Request,
+	res: Response,
+	next: NextFunction
+) => {
 	const { position, uuidParent, uuidChild, date } = req.body;
 	// date can be chosen in test env
 	const dateCreated = int(
@@ -29,6 +33,11 @@ export const create = (req: Request, res: Response, next: NextFunction) => {
 	if (!isUUID(uuidChild))
 		return next(new ApiError(400, 'Invalid UUID child', uuidChild));
 
+	// test connection
+	const rdy = await neo4j
+		.verifyConnectivity()
+		.catch(() => next(new ApiError(503, 'Neo4j is not ready')));
+	if (!rdy) return;
 	// insert cypher-query
 	const session = neo4j.session();
 	session

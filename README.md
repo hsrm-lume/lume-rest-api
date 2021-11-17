@@ -17,6 +17,10 @@ Restful API to create Tree Nodes in Neo4j db
 }
 ```
 
+**GET** `/v1/ready`
+
+Returns 200 if Neo4j is ready, else 503
+
 ---
 
 Mock data:
