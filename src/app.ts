@@ -8,7 +8,7 @@ import config from './config/config';
 
 // send wrapped json
 express.response.wjson = function (d: Object | Error) {
-	if (d instanceof Error || d instanceof ApiError) console.log(d.stack);
+	if (d instanceof Error || d instanceof ApiError) console.warn(d.message);
 	if (d instanceof ApiError)
 		return this.status(d.code).json({
 			version: config.apiVersion,

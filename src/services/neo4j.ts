@@ -8,12 +8,11 @@ const neo4j = driver(
 
 const testConnection = async () => {
 	console.log('testing connection...');
-	await sleep(1000);
+	await sleep(3000);
 	neo4j
 		.verifyConnectivity()
 		.then((si) => console.log('connected to', si))
 		.catch((err) => {
-			console.log(err);
 			testConnection();
 		});
 };
