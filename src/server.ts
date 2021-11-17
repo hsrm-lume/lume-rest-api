@@ -1,4 +1,3 @@
-require('dotenv').config();
 import 'reflect-metadata';
 import App from './app';
 import config from './config/config';
