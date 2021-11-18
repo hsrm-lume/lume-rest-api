@@ -17,7 +17,7 @@ export const create = async (
 	const { position, uuidParent, uuidChild, date } = req.body;
 	// date can be chosen in test env
 	const dateCreated = int(
-		(config.stage === 'test' ? new Date(date) : new Date()).getTime()
+		(config.stage === 'test' && date ? new Date(date) : new Date()).getTime()
 	);
 	// input validation
 	if (
