@@ -1,3 +1,7 @@
+/**
+ * Costom Error-Type for API-Calls
+ * Can be used to create custom error-messages with HTTP codes
+ */
 export default class ApiError extends Error {
 	constructor(
 		public code: number = 500,

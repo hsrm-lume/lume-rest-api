@@ -6,7 +6,10 @@ import Routes from './router/index';
 import ApiError from './util/ApiError';
 import config from './config/config';
 
-// send wrapped json
+/**
+ * Sends Payload or Error-Message to caller
+ * @param d The Object or error to send
+ */
 express.response.wjson = function (d: Object | Error) {
 	if (d instanceof Error || d instanceof ApiError) console.warn(d.message);
 	if (d instanceof ApiError)
@@ -33,19 +36,20 @@ export default class App {
 	public routes: Routes = new Routes();
 
 	public initialize(): void {
+		// create plain express app
 		this.defaultApp = express();
+		// configure it
 		this.config();
-		this.setRouter();
+		// load routes
+		this.routes.loadRoutes(this.defaultApp);
 	}
 
 	private config(): void {
 		// support application/json type post data
 		this.defaultApp.use(express.json());
+		// enable cors
 		this.defaultApp.use(cors());
+		// secure express app
 		this.defaultApp.use(helmet());
-	}
-
-	private setRouter(): void {
-		this.routes.loadRoutes(this.defaultApp);
 	}
 }

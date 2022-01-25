@@ -1,13 +1,9 @@
+/**
+ * Tells typescript that Express.Response has a function
+ * to apply shimming to the response object.
+ */
 declare namespace Express {
-	interface Request {
-		token?: TokenData;
-	}
 	interface Response {
 		wjson: Function;
 	}
-}
-
-declare interface TokenData {
-	customerID: string;
-	email: string;
 }

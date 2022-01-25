@@ -4,20 +4,31 @@ import config from '../config/config';
 import neo4j from '../services/neo4j';
 import ApiError from '../util/ApiError';
 
+/**
+ * @param uuid some thing to be tested
+ * @returns true if thing is a valid uuid
+ */
 const isUUID = (uuid: any) =>
 	('' + uuid).match(
 		/^[0-9A-F]{8}-[0-9A-F]{4}-[1-5][0-9A-F]{3}-[89AB][0-9A-F]{3}-[0-9A-F]{12}$/i
 	) !== null;
 
+/**
+ * Action that inserts a new node into the neo4j database
+ */
 export const create = async (
 	req: Request,
 	res: Response,
 	next: NextFunction
 ) => {
+	// parse the message body
 	const { position, uuidParent, uuidChild, date } = req.body;
-	// date can be chosen in test env
+	// date can be chosen by caller only in test env
 	const dateCreated = int(
-		(config.stage === 'test' && date ? new Date(date) : new Date()).getTime()
+		(config.stage === 'test' && date
+			? new Date(date)
+			: new Date()
+		).getTime()
 	);
 	// input validation
 	if (
@@ -38,6 +49,7 @@ export const create = async (
 		.verifyConnectivity()
 		.catch(() => next(new ApiError(503, 'Neo4j is not ready')));
 	if (!rdy) return;
+
 	// insert cypher-query
 	const session = neo4j.session();
 	session
