@@ -11,7 +11,7 @@ export default class ApiError extends Error {
 		super(message);
 
 		console.log(this.stack);
-
+		//Set objecttype of this object to ApiError
 		Object.setPrototypeOf(this, ApiError.prototype);
 	}
 }

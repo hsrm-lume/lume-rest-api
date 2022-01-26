@@ -42,7 +42,7 @@ The following GitHub-Actions can help deploying the app:
 | -------------- | ------------------------------------- |
 | .github        | yaml-Definitions of GitHub-Actions    |
 | .vscode        | Editor configuration                  |
-| src/config     | Configoration                         |
+| src/config     | Configuration                         |
 | src/controller | Actions bound to routes               |
 | src/router     | Definitions and helpers for routes    |
 | src/services   | Services supplied for the controllers |

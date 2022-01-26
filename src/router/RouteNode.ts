@@ -3,7 +3,7 @@ import IRoute from './IRoute';
 
 // HTTP-Methods
 type Method = 'get' | 'post' | 'put' | 'patch' | 'delete';
-// Handler-Interface that can hold a handler per `Method`
+// Handler-Interface that holds a handler per `Method`
 type IHandler = {
 	[key in Method]?: RequestHandler;
 };

@@ -8,11 +8,14 @@ import * as stateController from '../controller/StateController';
  * using the RouteNode-Class
  */
 const root = new RouteNode(
+	//set version of API
 	'v' + config.apiVersion,
 	{},
+	//API ready check
 	new RouteNode('ready', {
 		get: stateController.ready,
 	}),
+	//create new torch entry
 	new RouteNode('new', {
 		post: treeController.create,
 	})
