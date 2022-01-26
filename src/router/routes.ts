@@ -1,22 +1,23 @@
-import { NextFunction } from 'express';
 import config from '../config/config';
-import { RouterNode as N } from './RouterNode';
+import { RouteNode } from './RouteNode';
 import * as treeController from '../controller/TreeController';
 import * as stateController from '../controller/StateController';
-import ApiError from '../util/ApiError';
 
-const notImplementedRoute = (_req: any, _res: any, next: NextFunction) => {
-	next(new ApiError(501, 'not implemented'));
-};
-
-const root = new N(
+/**
+ * Defines the routes for the API
+ * using the RouteNode-Class
+ */
+const root = new RouteNode(
+	//set version of API
 	'v' + config.apiVersion,
 	{},
-	new N('ready', {
-		get: { action: stateController.ready },
+	//API ready check
+	new RouteNode('ready', {
+		get: stateController.ready,
 	}),
-	new N('new', {
-		post: { action: treeController.create },
+	//create new torch entry
+	new RouteNode('new', {
+		post: treeController.create,
 	})
 );
 export default root;
