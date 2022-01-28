@@ -55,10 +55,12 @@ export const create = async (
 	session
 		.writeTransaction((txc) =>
 			txc.run(
-				`MATCH
-				(a:User)
-				WHERE a.uuid = $parentUuid
-				CREATE (a)-[:LIGHTS]->(b:User { uuid: $childUuid, litTime: $litTime, lat: $lat, lng: $lng })
+				`MATCH (a:User) WHERE a.uuid = $parentUuid // find parent node
+				MERGE (b:User {uuid: $childUuid}) // create child node if not exists
+				SET b.litTime = coalesce(b.litTime, $litTime) // set litTime if not exists
+				SET b.lat = coalesce(b.lat, $lat) // set lat if not exists
+				SET b.lng = coalesce(b.lng, $lng) // set lng if not exists
+				MERGE (a)-[:LIGHTS]->(b) // create link if not exists
 				RETURN a,b`,
 				{
 					parentUuid: uuidParent,

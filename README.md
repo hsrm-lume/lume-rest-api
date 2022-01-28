@@ -50,4 +50,10 @@ The following GitHub-Actions can help deploying the app:
 | src/types      | Type extensions / definitions         |
 
 To test / develop the API, a neo4j-container can be started through the [docker-compose.yml](docker-compose.yml) file.
-A root-node has to be inserted manually for the API to work.
+
+A root-node has to be inserted manually for the API to work:
+
+```cypher
+MERGE (b:User { uuid: "00000000-0000-4000-A000-000000000000", litTime: 1609459200000, lat: 50.09692895957101, lng: 8.21682929992676 });
+CREATE CONSTRAINT uuid_unique FOR (u:User) REQUIRE u.uuid IS UNIQUE;
+```
